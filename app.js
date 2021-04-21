@@ -4,11 +4,11 @@ app.service('sharedProperties', function () {
     var title = [];
 
     return {
-        getProperty: function () {
+        getProperty: function() {
             return title;
         },
         setProperty: function(value) {
-            title = value;
+            title.push(value);
         }
     };
 });
@@ -17,19 +17,19 @@ app.config(function($routeProvider) {
 $routeProvider
  
 .when('/', {
-    templateUrl : 'pages/first.html',
-    controller : 'FirstController'
+    templateUrl : 'pages/home.html',
+    controller : 'HomeController'
 })
  
 .when('/login', {
-    templateUrl : 'pages/second.html',
-    controller : 'SecondController'
+    templateUrl : 'pages/login.html',
+    controller : 'LoginController'
 })
 
 .otherwise({redirectTo: '/'});
 });
 
-app.controller('FirstController', function($scope, sharedProperties) {
+app.controller('HomeController', function($scope, sharedProperties) {
     $scope.message = "Welcome to Ronny and Tyler's Shop!";
 
     function setItem($item) {
@@ -42,7 +42,7 @@ app.controller('FirstController', function($scope, sharedProperties) {
     setItem("Computer");
 });
      
-app.controller('SecondController', function($scope, $cookies) {
+app.controller('LoginController', function($scope, $cookies) {
 
     $scope.SetCookies = function () {
         $cookies.put("username", 'changt');
