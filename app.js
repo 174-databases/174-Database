@@ -38,7 +38,7 @@ app.controller('HomeController', function($scope, sharedProperties) {
     }
 
     setItem("Clothing");
-    setItem("Pizza");
+    setItem("Food");
     setItem("Computer");
 });
      
