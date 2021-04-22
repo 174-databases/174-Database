@@ -1,6 +1,6 @@
 <?php
 
-$server = "ec2-3-142-143-53.us-east-2.compute.amazonaws.com";
+$server = "localhost";
 $user = "root";
 $pass = "password";
 $db = "test";
