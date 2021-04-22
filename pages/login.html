@@ -1,14 +1,14 @@
+<h2 class="welcome">{{ message }}</h2>
+
 <div class="container">
     <form action="/action_page.php">
       <div class="row">
-        <h2 class="welcome">Login</h2>
-  
         <div class="col">
           <input type="text" name="username" placeholder="Username" required>
           <input type="password" name="password" placeholder="Password" required>
           <input type="submit" value="Login" ng-click="SetCookies()">
+          <a href="#/create/account">Create an Account</a>
         </div>
-        
       </div>
     </form>
   </div>
