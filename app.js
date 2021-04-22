@@ -63,6 +63,7 @@ app.controller('HomeController', function($scope, sharedProperties) {
 });
      
 app.controller('LoginController', function($scope, $cookies) {
+    $scope.message = "Login";
 
     $scope.SetCookies = function () {
         $cookies.put("username", 'changt');
