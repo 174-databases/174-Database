@@ -26,6 +26,11 @@ $routeProvider
     controller : 'LoginController'
 })
 
+.when('/clothing/tshirt', {
+    templateUrl : 'pages/tshirt.html',
+    controller : 'TshirtController'
+})
+
 .otherwise({redirectTo: '/'});
 });
 
@@ -56,4 +61,8 @@ app.controller('LoginController', function($scope, $cookies) {
     $scope.ClearCookies = function () {
         $cookies.remove('username');
     };
+});
+
+app.controller('TshirtController', function($scope) {
+    $scope.message = "T-Shirts";
 });
