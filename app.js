@@ -26,9 +26,24 @@ $routeProvider
     controller : 'LoginController'
 })
 
+.when('/create/account', {
+    templateUrl : 'pages/createAccount.html',
+    controller : 'NewAccountController'
+})
+
 .when('/clothing/tshirt', {
     templateUrl : 'pages/tshirt.html',
     controller : 'TshirtController'
+})
+
+.when('/food/pizza', {
+    templateUrl : 'pages/tshirt.html',
+    controller : 'FoodController'
+})
+
+.when('/computer', {
+    templateUrl : 'pages/tshirt.html',
+    controller : 'ComputerController'
 })
 
 .otherwise({redirectTo: '/'});
@@ -63,6 +78,18 @@ app.controller('LoginController', function($scope, $cookies) {
     };
 });
 
+app.controller('NewAccountController', function($scope) {
+    $scope.message = "Create an Account Now!";
+});
+
 app.controller('TshirtController', function($scope) {
     $scope.message = "T-Shirts";
+});
+
+app.controller('FoodController', function($scope) {
+    $scope.message = "Food";
+});
+
+app.controller('ComputerController', function($scope) {
+    $scope.message = "Computer";
 });
