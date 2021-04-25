@@ -37,13 +37,23 @@ $routeProvider
 })
 
 .when('/food/pizza', {
-    templateUrl : 'pages/tshirt.html',
+    templateUrl : 'pages/food.html',
     controller : 'FoodController'
 })
 
 .when('/computer', {
-    templateUrl : 'pages/tshirt.html',
+    templateUrl : 'pages/computer.html',
     controller : 'ComputerController'
+})
+
+.when('/computer/laptop', {
+    templateUrl : 'pages/laptop.html',
+    controller : 'LaptopController'
+})
+
+.when('/computer/desktop', {
+    templateUrl : 'pages/desktop.html',
+    controller : 'DesktopController'
 })
 
 .otherwise({redirectTo: '/'});
@@ -84,7 +94,36 @@ app.controller('NewAccountController', function($scope) {
 });
 
 app.controller('TshirtController', function($scope) {
-    $scope.message = "T-Shirts";
+    $scope.message = "Clothing";
+    $scope.entities = [{
+        name: 'Small',
+        checked: false
+      }, {
+        name: 'Medium',
+        checked: false
+      }, {
+        name: 'Large',
+        checked: true
+      }
+    ];
+
+    $(document).ready(function() {
+        $('.color-choose input').on('click', function() {
+            var tshirtColor = $(this).attr('data-image');
+       
+            $('.active').removeClass('active');
+            $('.left-column img[data-image = ' + tshirtColor + ']').addClass('active');
+            $(this).addClass('active');
+        });
+      });
+
+    // Only select one size
+    $scope.updateSelection = function(position, entities) {
+        angular.forEach(entities, function(subscription, index) {
+          if (position != index) 
+            subscription.checked = false;
+        });
+    }
 });
 
 app.controller('FoodController', function($scope) {
@@ -93,4 +132,15 @@ app.controller('FoodController', function($scope) {
 
 app.controller('ComputerController', function($scope) {
     $scope.message = "Computer";
+    $scope.section_title = [];
+    $scope.section_title.push("Desktop");
+    $scope.section_title.push("Laptop");
+});
+
+app.controller('LaptopController', function($scope) {
+    $scope.message = "Laptop";
+});
+
+app.controller('DesktopController', function($scope) {
+    $scope.message = "Desktop";
 });
