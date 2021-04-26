@@ -1,10 +1,21 @@
 app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location, $http, Data) {
 
+    // Page title
     $scope.message = "Login";
 
     // Change the Title of the Page
     if($location.$$path == "/create/account" ) {
         $scope.message = "Create an Account";
+    }
+
+    $scope.toggleLogin = function() {
+        if($rootScope.loggedIn == false) { 
+            $location.path('login');
+        } else {
+            $scope.logout();
+            $rootScope.loggedIn = false;
+        }
+        console.log($rootScope.loggedIn);
     }
 
     //initially set those objects to null to avoid undefined error
@@ -16,12 +27,12 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
         }).then(function (results) {
             Data.toast(results);
             if (results.status == "success") {
+                console.log('sucess');
+                $rootScope.loggedIn = true;
+                console.log($rootScope.loggedIn);
                 $location.path('/');
-            } else {
-                console.log(results);
             }
         });
-        console.log(Data.get('login'));
     };
 
     $scope.signup = {email:'',password:'',name:'',phone:'',address:''};
@@ -31,7 +42,7 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
         }).then(function (results) {
             Data.toast(results);
             if (results.status == "success") {
-                $location.path('dashboard');
+                $location.path('login');
             }
         });
     };

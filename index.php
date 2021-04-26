@@ -16,7 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-cookies.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-animate.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-animate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-sanitize.min.js"></script>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
 </head>
 <body>
@@ -33,10 +34,11 @@
     </style>
 
     <!-- Navigation Bar -->
-    <ul id="navbar">
+    <ul id="navbar" ng-controller="authCtrl">
         <a href="#/"><img src="images/rt_logo.png" class="logo"></img></a>
         <li><a><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
-        <li><a href="#/login">Login</a></li>
+        <!-- <li compile="html"></li>  -->
+        <li><a ng-click="toggleLogin();">{{ loggedIn ? 'Logout'  : 'Login' }}</a></li>
         <li><a><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
 
         <!-- Search Bar -->

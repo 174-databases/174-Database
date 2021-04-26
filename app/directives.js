@@ -29,3 +29,18 @@ app.directive('passwordMatch', [function () {
         }
     };
 }]);
+
+// Need for compiling html code using ng-bind-html 
+// (Not being used at the moment)
+app.directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+        scope.$watch(
+          function(scope) {
+            return scope.$eval(attrs.compile);
+          },
+          function(value) {
+            element.html(value);
+            $compile(element.contents())(scope);
+          }
+        )};
+  }]);
