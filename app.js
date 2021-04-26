@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ngRoute', 'ngCookies']);
+var app = angular.module('myApp', ['ngRoute', 'ngCookies', 'ngAnimate', 'toaster']);
 
 app.service('sharedProperties', function () {
     var title = [];
@@ -23,12 +23,18 @@ $routeProvider
  
 .when('/login', {
     templateUrl : 'pages/login.html',
-    controller : 'LoginController'
+    controller : 'authCtrl'
 })
 
-.when('/create/account', {
-    templateUrl : 'pages/createAccount.html',
-    controller : 'NewAccountController'
+.when('/logout', {
+    templateUrl : 'pages/logout.html',
+    controller : 'authCtrl'
+})
+
+
+.when('/signup', {
+    templateUrl : 'pages/signup.html',
+    controller : 'authCtrl'
 })
 
 .when('/clothing/tshirt', {
@@ -59,6 +65,27 @@ $routeProvider
 .otherwise({redirectTo: '/'});
 });
 
+app.run(function ($rootScope, $location, Data) {
+    $rootScope.$on("$routeChangeStart", function (event, next, current) {
+        $rootScope.authenticated = false;
+        Data.get('session').then(function (results) {
+            if (results.uid) {
+                $rootScope.authenticated = true;
+                $rootScope.uid = results.uid;
+                $rootScope.name = results.name;
+                $rootScope.email = results.email;
+            } else {
+                var nextUrl = next.$$route.originalPath;
+                if (nextUrl == '/create/account' || nextUrl == '/login') {
+                } else {
+                    $location.path("/login");
+                }
+            }
+        });
+    });
+    console.log(Data.get('session'));
+});
+
 app.controller('HomeController', function($scope, sharedProperties) {
     $scope.message = "Welcome to Ronny and Tyler's Shop!";
 
@@ -70,23 +97,6 @@ app.controller('HomeController', function($scope, sharedProperties) {
     setItem("Clothing");
     setItem("Food");
     setItem("Computer");
-});
-     
-app.controller('LoginController', function($scope, $cookies) {
-    $scope.message = "Login";
-
-    $scope.SetCookies = function () {
-        $cookies.put("username", 'changt');
-        console.log($cookies);
-    };
-
-    $scope.GetCookies = function () {
-        console.log($cookies.get('username'));
-    };
-
-    $scope.ClearCookies = function () {
-        $cookies.remove('username');
-    };
 });
 
 app.controller('NewAccountController', function($scope) {

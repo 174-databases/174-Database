@@ -1,24 +1,45 @@
-<h3 class="welcome">{{ message }}</h3>
+<div class="container2">
+  <!-- Left Column / Headphones Image -->
+  <div class="left-column">
+    <img data-image="red" class="active" src="images/pizza.jpg" alt="">
+  </div>
 
-<!-- Product Image -->
-<div class="left-column">
-    <img data-image="black" src="images/pizza.jpg" alt="">
-</div>
 
-<!-- Right Column -->
-<div class="right-column">
- 
+  <!-- Right Column -->
+  <div class="right-column">
+
     <!-- Product Description -->
     <div class="product-description">
+      <span>{{ message }}</span>
       <h1>Pizza</h1>
-      <p>The preferred choice of any food is Pizza.</p>
+      <p>The preferred choice of any food is Pizza. Enjoy one of our most popular food items on our menu!</p>
     </div>
 
+    <!-- Product Configuration -->
+    <div class="product-configuration">
+
+      <!-- Product Color -->
+      <div class="product-color">
+        <span>Color</span>
+
+        <div class="color-choose">
+          <!-- <div>
+            <input data-image="cheese" type="radio" id="cheese" name="color" value="cheese" checked>
+            <label for="cheese"><span></span></label>
+          </div>
+          <div>
+            <input data-image="no cheese" type="radio" id="blue" name="color" value="blue">
+            <label for="blue"><span></span></label>
+          </div>
+          <div> -->
+        </div>
+
+      </div>
+    
     <!-- Product Pricing -->
     <div class="product-price">
-        <span>148$</span>
-        <a href="#" class="cart-btn">Add to cart</a>
-      </div>
+      <span>$9.99</span>
+      <a href="#" class="cart-btn">Add to cart</a>
     </div>
-
+  </div>
 </div>
