@@ -15,7 +15,6 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
             $scope.logout();
             $rootScope.loggedIn = false;
         }
-        console.log($rootScope.loggedIn);
     }
 
     //initially set those objects to null to avoid undefined error
@@ -27,9 +26,7 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
         }).then(function (results) {
             Data.toast(results);
             if (results.status == "success") {
-                console.log('sucess');
                 $rootScope.loggedIn = true;
-                console.log($rootScope.loggedIn);
                 $location.path('/');
             }
         });

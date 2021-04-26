@@ -88,7 +88,7 @@ app.run(function ($rootScope, $location, Data) {
     console.log(Data.get('session'));
 });
 
-app.controller('HomeController', function($scope, $sce, sharedProperties) {
+app.controller('HomeController', function($scope, sharedProperties) {
     $scope.message = "Welcome to Ronny and Tyler's Shop!";
 
     function setItem($item) {
