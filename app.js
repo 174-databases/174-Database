@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ngRoute', 'ngCookies', 'ngAnimate', 'toaster']);
+var app = angular.module('myApp', ['ngRoute', 'ngCookies', 'ngAnimate', 'toaster', 'ngSanitize']);
 
 app.service('sharedProperties', function () {
     var title = [];
@@ -74,11 +74,13 @@ app.run(function ($rootScope, $location, Data) {
                 $rootScope.uid = results.uid;
                 $rootScope.name = results.name;
                 $rootScope.email = results.email;
+                $rootScope.loggedIn = true;
             } else {
                 var nextUrl = next.$$route.originalPath;
                 if (nextUrl == '/create/account' || nextUrl == '/login') {
                 } else {
                     $location.path("/login");
+                    $rootScope.loggedIn = false;
                 }
             }
         });
