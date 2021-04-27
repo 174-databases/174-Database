@@ -1,0 +1,33 @@
+<h2 class="welcome">{{ message }}</h2>
+
+<form name="updateAccountForm" class="form-horizontal" role="form">
+  <div class="left form-group">
+      <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
+      <div class="center col-sm-7">
+          <span class="block input-icon input-icon-right">
+              <input ng-disabled="true" type="text" class="form-control" ng-value="email" focus/>
+          </span>
+      </div>
+  </div>
+
+          <div class="left form-group">
+              <label class="col-sm-5 control-label no-padding-right" for="firstName">firstName</label>
+              <div class="center col-sm-7">
+                  <span class="block input-icon input-icon-right">
+                      <input type="text" class="form-control" ng-value="firstName" ng-model="update.firstName" />
+                  </span>
+              </div>
+          </div>
+          
+          
+          <div class="left form-group">
+              <span class="lbl col-sm-5"> </span>
+              <div class="center col-sm-7">
+                  <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="updateAccount(update)" data-ng-disabled="updateAccountForm.$invalid">
+                      Update
+                  </button>
+              </div>
+          </div>
+          </fieldset>
+  </div>
+</form>

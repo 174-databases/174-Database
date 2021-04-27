@@ -31,10 +31,19 @@ $routeProvider
     controller : 'authCtrl'
 })
 
-
 .when('/signup', {
     templateUrl : 'pages/signup.html',
     controller : 'authCtrl'
+})
+
+.when('/password', {
+    templateUrl : 'pages/password.html',
+    controller : 'PasswordController'
+})
+
+.when('/settings', {
+    templateUrl : 'pages/settings.html',
+    controller : 'SettingsController'
 })
 
 .when('/clothing/tshirt', {
@@ -69,15 +78,16 @@ app.run(function ($rootScope, $location, Data) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         $rootScope.authenticated = false;
         Data.get('session').then(function (results) {
-            if (results.uid) {
+            if (results.id) {
                 $rootScope.authenticated = true;
-                $rootScope.uid = results.uid;
-                $rootScope.name = results.name;
+                $rootScope.id = results.id;
+                $rootScope.firstName = results.firstName;
+                $rootScope.lastName = results.lastName;
                 $rootScope.email = results.email;
                 $rootScope.loggedIn = true;
             } else {
                 var nextUrl = next.$$route.originalPath;
-                if (nextUrl == '/create/account' || nextUrl == '/login') {
+                if (nextUrl == '/signup' || nextUrl == '/password' || nextUrl == '/login') {
                 } else {
                     $location.path("/login");
                     $rootScope.loggedIn = false;
@@ -101,11 +111,37 @@ app.controller('HomeController', function($scope, sharedProperties) {
     setItem("Computer");
 });
 
-app.controller('NewAccountController', function($scope) {
-    $scope.message = "Create an Account Now!";
+app.controller('SettingsController', function($scope, $location, $http, Data) {
+    $scope.message = "Account Settings";
+
+    Data.get('session').then(function (results) {
+        if (results.id) {
+            $scope.firstName = results.firstName;
+            $scope.email = results.email;
+        }
+    });
+
+    $scope.updateAccount = {email:'',name:''};
+    $scope.updateAccount = function (customer) {
+        customer.email = $scope.email;
+        console.log(customer);
+        Data.post('updateAccount', {
+            customer: customer
+        }).then(function (results) {
+            console.log(results);
+            Data.toast(results);
+            if (results.status == "success") {
+                $location.path('login');
+            }
+        });
+    };
 });
 
-app.controller('TshirtController', function($scope) {
+app.controller('PasswordController', function($scope, $location, $http, Data) {
+    $scope.message = "Reset Password";
+});
+
+app.controller('TshirtController', function($scope, $location, $http, Data) {
     $scope.message = "Clothing";
     $scope.entities = [{
         name: 'Small',

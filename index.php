@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/toaster.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-cookies.js"></script> 
@@ -36,8 +37,19 @@
     <!-- Navigation Bar -->
     <ul id="navbar" ng-controller="authCtrl">
         <a href="#/"><img src="images/rt_logo.png" class="logo"></img></a>
-        <li><a><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
-        <!-- <li compile="html"></li>  -->
+        <!-- <li class="account-li">
+            <a class="account-a">
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                <a href="#/settings">Settings</a>
+            </a>
+        </li> -->
+        <div class="dropdown" style="float:right;">
+            <i class="dropbtn fa fa-user-circle-o" aria-hidden="true"></i>
+            <div class="dropdown-content">
+                <a href="#/settings">Account Settings</a>
+            </div>
+        </div>
+
         <li><a ng-click="toggleLogin();">{{ loggedIn ? 'Logout'  : 'Login' }}</a></li>
         <li><a><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
 
@@ -64,7 +76,7 @@
 <footer class="footer">
     <div>
         <div class="col-sm-12 text-center"><br>
-            <p>Developed by Ronny Rit and Tyler Chang</p>
+            <p>Developed by Ronny Ritprasert and Tyler Chang</p>
             <a href="api/test.php" style="text-decoration: none;">database test</a><br>
             <small>&copy; Copyright 2021,  All Rights Reserved</small>
         </div>

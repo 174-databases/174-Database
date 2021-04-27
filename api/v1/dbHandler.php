@@ -41,7 +41,33 @@ class DbHandler {
         if ($r) {
             $new_row_id = $this->conn->insert_id;
             return $new_row_id;
-            } else {
+        } else {
+            return NULL;
+        }
+    }
+
+    public function updateTable($obj, $column_names, $table_name, $name, $email) {
+        $c = (array) $obj;
+        $keys = array_keys($c);
+        $columns = '';
+        $values = '';
+        foreach($column_names as $desired_key){ // Check the obj received. If blank insert blank into the array.
+           if(!in_array($desired_key, $keys)) {
+                $$desired_key = '';
+            }else{
+                $$desired_key = $c[$desired_key];
+            }
+            $columns = $columns.$desired_key.',';
+            $values = $values."'".$$desired_key."',";
+        }
+        $query = "UPDATE customer SET name='test' WHERE email = 'chang.ty97@gmail.com'"; //. $table_name . "SET " . $column_names[0] . "=" . $values. "WHERE ". $column_names[1] . "=" . $email;
+
+        $r = $this->conn->query($query) or die($this->conn->error.__LINE__);
+
+        if ($r) {
+            $new_row_id = $this->conn->insert_id;
+            return $new_row_id;
+        } else {
             return NULL;
         }
     }
@@ -51,18 +77,21 @@ class DbHandler {
             session_start();
         }
         $sess = array();
-        if(isset($_SESSION['uid']))
+        if(isset($_SESSION['id']))
         {
-            $sess["uid"] = $_SESSION['uid'];
-            $sess["name"] = $_SESSION['name'];
+            $sess["id"] = $_SESSION['id'];
+            $sess["firstName"] = $_SESSION['firstName'];
+            $sess["lastName"] = $_SESSION['lastName'];
             $sess["email"] = $_SESSION['email'];
         }
         else
         {
-            $sess["uid"] = '';
-            $sess["name"] = 'Guest';
+            $sess["id"] = '';
+            $sess["firstName"] = 'Guest';
+            $sess["lastName"] = '';
             $sess["email"] = '';
         }
+
         return $sess;
     }
 
@@ -70,10 +99,11 @@ class DbHandler {
         if (!isset($_SESSION)) {
         session_start();
         }
-        if(isSet($_SESSION['uid']))
+        if(isSet($_SESSION['id']))
         {
-            unset($_SESSION['uid']);
-            unset($_SESSION['name']);
+            unset($_SESSION['id']);
+            unset($_SESSION['firstName']);
+            unset($_SESSION['lastName']);
             unset($_SESSION['email']);
             $info='info';
             if(isSet($_COOKIE[$info]))
