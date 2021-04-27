@@ -17,7 +17,7 @@ $app->post('/login', function() use ($app) {
     $db = new DbHandler();
     $password = $r->customer->password;
     $email = $r->customer->email;
-    $user = $db->getOneRecord("select * from customer where email='$email'");
+    $user = $db->getOneRecord("select id,firstName,lastName,password,email from customer where email='$email'");
     if ($user != NULL) {
         if(passwordHash::check_password($user['password'], $password)){
             $response['status'] = "success";
@@ -83,7 +83,7 @@ $app->post('/signup', function() use ($app) {
         }            
     } else {
         $response["status"] = "error";
-        $response["message"] = "An user with the provided email exists!";
+        $response["message"] = "A user with the provided email exists!";
         echoResponse(201, $response);
     }
 });

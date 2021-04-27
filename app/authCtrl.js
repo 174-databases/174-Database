@@ -26,7 +26,6 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
         Data.post('login', {
             customer: customer
         }).then(function (results) {
-            console.log(results);
             Data.toast(results);
             if (results.status == "success") {
                 $rootScope.loggedIn = true;

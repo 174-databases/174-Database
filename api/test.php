@@ -2,7 +2,7 @@
 
 $server = "localhost";
 $user = "root";
-$pass = "";
+$pass = "password";
 $db = "RT_SHOP";
 
 $conn = new mysqli($server, $user, $pass, $db);
