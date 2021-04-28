@@ -23,24 +23,24 @@
 
       <!-- Product Color -->
       <div class="product-color">
-        <span>Color</span>
+        <span>Color:</span>
 
         <div class="color-choose">
           <div>
-            <input data-image="red" type="radio" id="red" name="color" value="red" checked>
+            <input data-image="red" type="radio" id="red" name="color" value="red" ng-model="item.red" checked>
             <label for="red"><span></span></label>
           </div>
           <div>
-            <input data-image="blue" type="radio" id="blue" name="color" value="blue">
+            <input data-image="blue" type="radio" id="blue" name="color" value="blue" ng-model="item.blue">
             <label for="blue"><span></span></label>
           </div>
           <div>
             <div>
-              <input data-image="white" type="radio" id="white" name="color" value="white">
+              <input data-image="white" type="radio" id="white" name="color" value="white" ng-model="item.white">
               <label for="white"><span></span></label>
             </div>
             <div>
-            <input data-image="black" type="radio" id="black" name="color" value="black">
+            <input data-image="black" type="radio" id="black" name="color" value="black" ng-model="item.white">
             <label for="black"><span></span></label>
           </div>
         </div>
@@ -49,21 +49,30 @@
 
     <!-- Product Size -->
     <div class="product-color">
-      <span>Size</span>
+      <span>Size:</span>
+        <div>
+          <input type="radio" id="small" name="size" value="small" ng-model="item.small">
+          <label for="small"><span>Small</span></label>
+        </div>
+        <div>
+          <input type="radio" id="medium" name="size" value="medium" ng-model="item.medium" ng-checked="true" checked>
+          <label for="medium"><span>Medium</span></label>
+        </div>
+          <div>
+            <input type="radio" id="large" name="size" value="large" ng-model="item.large">
+            <label for="large"><span>Large</span></label>
+          </div>
+    </div>
 
-      <div ng-repeat="subscription in entities">
-        <label class="container">
-          <input style="width: 10%;" type="checkbox" ng-model="subscription.checked" ng-click="updateSelection($index, entities)">
-          <span class="checkmark">{{ subscription.name }}</span>
-        </label>
-      </div>
-
+    <div class="product-color">
+      <span>Quantity:</span>
+      <input type="text" class="product-quantity" name="quantity" ng-value="1" ng-size="2" ng-model="item.quantity" />
     </div>
     
     <!-- Product Pricing -->
     <div class="product-price">
       <span>$4.99</span>
-      <a href="#" class="cart-btn">Add to cart</a>
+      <input type="submit" value="Add to Cart" class="cart-btn" ng-click="addToCart(item)" />
     </div>
   </div>
 </div>

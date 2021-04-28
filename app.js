@@ -131,7 +131,7 @@ app.controller('SettingsController', function($scope, $location, $http, Data) {
             console.log(results);
             Data.toast(results);
             if (results.status == "success") {
-                $location.path('login');
+                $location.path('/');
             }
         });
     };
@@ -143,17 +143,6 @@ app.controller('PasswordController', function($scope, $location, $http, Data) {
 
 app.controller('TshirtController', function($scope, $location, $http, Data) {
     $scope.message = "Clothing";
-    $scope.entities = [{
-        name: 'Small',
-        checked: false
-      }, {
-        name: 'Medium',
-        checked: false
-      }, {
-        name: 'Large',
-        checked: true
-      }
-    ];
 
     $(document).ready(function() {
         $('.color-choose input').on('click', function() {
@@ -165,13 +154,14 @@ app.controller('TshirtController', function($scope, $location, $http, Data) {
         });
       });
 
-    // Only select one size
-    $scope.updateSelection = function(position, entities) {
-        angular.forEach(entities, function(subscription, index) {
-          if (position != index) 
-            subscription.checked = false;
-        });
-    }
+//    $scope.addToCart(item) {
+//        console.log(item);
+//        Data.post('addToCart', {
+//            item: item
+//        }).then(function (results) {
+//            console.log(results);
+//        });
+//    };
 });
 
 app.controller('FoodController', function($scope) {

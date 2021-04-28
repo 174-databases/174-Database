@@ -103,14 +103,13 @@ $app->post('/updateAccount', function() use ($app) {
     require_once 'passwordHash.php';
     $db = new DbHandler();
     $firstName = $r->customer->firstName;
-    $lastName = $r->customer->lastName;
     $email = $r->customer->email;
     $isUserExists = $db->getOneRecord("select 1 from CUSTOMER where email='$email'");
-    
+
     if($isUserExists){
         $table_name = "CUSTOMER";
-        $column_names = array('firstName');
-        $result = $db->updateTable($r->customer, $column_names, $table_name, $firstName, $email);
+        $column_names = 'firstName';
+        $result = $db->updateTable($column_names, $table_name, $firstName, $email);
         if ($result != NULL) {
             $response["status"] = "success";
             $response["message"] = "Updated account successfully";
