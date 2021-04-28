@@ -13,7 +13,7 @@ if($conn->connect_error) {
 }
 
 //Check to see if the Accept button was selected else it was Declined
-$sql = "SELECT * FROM customer";
+$sql = "SELECT * FROM CUSTOMER";
 $result = $conn->query($sql);
 
 if($result->num_rows > 0)

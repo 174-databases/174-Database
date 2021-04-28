@@ -60,7 +60,7 @@ class DbHandler {
             $columns = $columns.$desired_key.',';
             $values = $values."'".$$desired_key."',";
         }
-        $query = "UPDATE customer SET name='test' WHERE email = 'chang.ty97@gmail.com'"; //. $table_name . "SET " . $column_names[0] . "=" . $values. "WHERE ". $column_names[1] . "=" . $email;
+        $query = "UPDATE CUSTOMER SET name='test' WHERE email = 'chang.ty97@gmail.com'"; //. $table_name . "SET " . $column_names[0] . "=" . $values. "WHERE ". $column_names[1] . "=" . $email;
 
         $r = $this->conn->query($query) or die($this->conn->error.__LINE__);
 

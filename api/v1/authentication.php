@@ -17,7 +17,7 @@ $app->post('/login', function() use ($app) {
     $db = new DbHandler();
     $password = $r->customer->password;
     $email = $r->customer->email;
-    $user = $db->getOneRecord("select id,firstName,lastName,password,email from customer where email='$email'");
+    $user = $db->getOneRecord("select id,firstName,lastName,password,email from CUSTOMER where email='$email'");
     if ($user != NULL) {
         if(passwordHash::check_password($user['password'], $password)){
             $response['status'] = "success";
@@ -57,11 +57,11 @@ $app->post('/signup', function() use ($app) {
     $lastName = $r->customer->lastName;
     $email = $r->customer->email;
     $password = $r->customer->password;
-    $isUserExists = $db->getOneRecord("select 1 from customer where email='$email'");
+    $isUserExists = $db->getOneRecord("select 1 from CUSTOMER where email='$email'");
 
     if(!$isUserExists){
         $r->customer->password = passwordHash::hash($password);
-        $table_name = "customer";
+        $table_name = "CUSTOMER";
         $column_names = array('firstName', 'lastName', 'email', 'password');
         $result = $db->insertIntoTable($r->customer, $column_names, $table_name);
         if ($result != NULL) {
@@ -105,10 +105,10 @@ $app->post('/updateAccount', function() use ($app) {
     $firstName = $r->customer->firstName;
     $lastName = $r->customer->lastName;
     $email = $r->customer->email;
-    $isUserExists = $db->getOneRecord("select 1 from customer where email='$email'");
+    $isUserExists = $db->getOneRecord("select 1 from CUSTOMER where email='$email'");
     
     if($isUserExists){
-        $table_name = "customer";
+        $table_name = "CUSTOMER";
         $column_names = array('firstName');
         $result = $db->updateTable($r->customer, $column_names, $table_name, $firstName, $email);
         if ($result != NULL) {
