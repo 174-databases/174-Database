@@ -111,19 +111,26 @@ app.controller('HomeController', function($scope, sharedProperties) {
     setItem("Computer");
 });
 
-app.controller('SettingsController', function($scope, $location, $http, Data) {
+app.controller('SettingsController', function($rootScope, $scope, $location, $interval, $http, Data) {
     $scope.message = "Account Settings";
 
+    // Automatically get first name and email to display on UI
     Data.get('session').then(function (results) {
         if (results.id) {
-            $scope.firstName = results.firstName;
-            $scope.email = results.email;
+            $rootScope.firstName = results.firstName;
+            $rootScope.email = results.email;
         }
     });
 
+    // Automatically detect first name changes
+    Data.get('getFirstName').then(function (results) {
+        $rootScope.firstName = results;
+    });
+
+    // Function to update user's first name
     $scope.updateAccount = {email:'',name:''};
     $scope.updateAccount = function (customer) {
-        customer.email = $scope.email;
+        customer.email = $rootScope.email;
         console.log(customer);
         Data.post('updateAccount', {
             customer: customer
