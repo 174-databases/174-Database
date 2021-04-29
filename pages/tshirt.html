@@ -27,20 +27,20 @@
 
         <div class="color-choose">
           <div>
-            <input data-image="red" type="radio" id="red" name="color" value="red" ng-model="item.red" ng-checked="true" checked>
+            <input data-image="red" type="radio" id="red" name="color" value="red" ng-model="item.color" ng-checked="true" checked>
             <label for="red"><span></span></label>
           </div>
           <div>
-            <input data-image="blue" type="radio" id="blue" name="color" value="blue" ng-model="item.blue">
+            <input data-image="blue" type="radio" id="blue" name="color" value="blue" ng-model="item.color">
             <label for="blue"><span></span></label>
           </div>
           <div>
             <div>
-              <input data-image="white" type="radio" id="white" name="color" value="white" ng-model="item.white">
+              <input data-image="white" type="radio" id="white" name="color" value="white" ng-model="item.color">
               <label for="white"><span></span></label>
             </div>
             <div>
-            <input data-image="black" type="radio" id="black" name="color" value="black" ng-model="item.white">
+            <input data-image="black" type="radio" id="black" name="color" value="black" ng-model="item.color">
             <label for="black"><span></span></label>
           </div>
         </div>
@@ -51,22 +51,22 @@
     <div class="product-color">
       <span>Size:</span>
         <div>
-          <input type="radio" id="small" name="size" value="small" ng-model="item.small">
+          <input type="radio" id="small" name="size" value="small" ng-model="item.size">
           <label for="small"><span>Small</span></label>
         </div>
         <div>
-          <input type="radio" id="medium" name="size" value="medium" ng-model="item.medium" ng-checked="true" checked>
+          <input type="radio" id="medium" name="size" value="medium" ng-model="item.size" ng-checked="true" checked>
           <label for="medium"><span>Medium</span></label>
         </div>
           <div>
-            <input type="radio" id="large" name="size" value="large" ng-model="item.large">
+            <input type="radio" id="large" name="size" value="large" ng-model="item.size" >
             <label for="large"><span>Large</span></label>
           </div>
     </div>
 
     <div class="product-color">
       <span>Quantity:</span>
-      <input type="text" class="product-quantity" name="quantity" ng-value="1" ng-size="2" ng-model="item.quantity" />
+      <input type="text" class="product-quantity" name="quantity" value="1" ng-size="2" ng-model="item.quantity" />
     </div>
     
     <!-- Product Pricing -->

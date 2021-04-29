@@ -85,6 +85,7 @@ app.run(function ($rootScope, $location, Data) {
                 $rootScope.lastName = results.lastName;
                 $rootScope.email = results.email;
                 $rootScope.loggedIn = true;
+                $rootScope.quantity = 0;
             } else {
                 var nextUrl = next.$$route.originalPath;
                 if (nextUrl == '/signup' || nextUrl == '/password' || nextUrl == '/login') {
@@ -131,11 +132,9 @@ app.controller('SettingsController', function($rootScope, $scope, $location, $in
     $scope.updateAccount = {email:'',name:''};
     $scope.updateAccount = function (customer) {
         customer.email = $rootScope.email;
-        console.log(customer);
         Data.post('updateAccount', {
             customer: customer
         }).then(function (results) {
-            console.log(results);
             Data.toast(results);
             if (results.status == "success") {
                 $location.path('/');
@@ -148,8 +147,15 @@ app.controller('PasswordController', function($scope, $location, $http, Data) {
     $scope.message = "Reset Password";
 });
 
-app.controller('TshirtController', function($scope, $location, $http, Data) {
+app.controller('TshirtController', function($rootScope, $scope, $location, $http, Data) {
     $scope.message = "Clothing";
+
+    // Automatically get customer ID and set default values for T-Shirt
+        Data.get('session').then(function (results) {
+            if (results.id) {
+                $scope.item = {id:results.id,sku:101,color:'red',size:'medium',quantity:1,price:4.99};
+            }
+        });
 
     $(document).ready(function() {
         $('.color-choose input').on('click', function() {
@@ -161,14 +167,9 @@ app.controller('TshirtController', function($scope, $location, $http, Data) {
         });
       });
 
-//    $scope.addToCart(item) {
-//        console.log(item);
-//        Data.post('addToCart', {
-//            item: item
-//        }).then(function (results) {
-//            console.log(results);
-//        });
-//    };
+    $scope.addToCart = function (item) {
+        $rootScope.quantity = item.quantity;
+    };
 });
 
 app.controller('FoodController', function($scope) {

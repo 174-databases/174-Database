@@ -51,7 +51,7 @@
         </div>
 
         <li><a ng-click="toggleLogin();">{{ loggedIn ? 'Logout'  : 'Login' }}</a></li>
-        <li><a><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+        <li><a><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class='badge badge-warning' id='lblCartCount'> {{ quantity }} </span></a></li>
 
         <!-- Search Bar -->
         <div class="wrap">
