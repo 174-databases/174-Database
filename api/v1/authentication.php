@@ -130,4 +130,20 @@ $app->post('/updateAccount', function() use ($app) {
         }
     }
 });
+
+$app->post('/checkout', function() use ($app) {
+    $response = array();
+    $r = json_decode($app->request->getBody());
+    verifyRequiredParams(array('id'), $r->item);
+//     require_once 'passwordHash.php';
+    $db = new DbHandler();
+    $sku = $r->item->sku;
+//     $id = $r->customer->id;
+//     $inStock = $db->getOneRecord("select id from CUSTOMER where id='$id'");//"select 1 from ITEM where SKU='$sku' AND stockCount > 0");
+//
+
+//         $table_name3 = "BUYS";
+//         $column_names3 = array('ID','SKU','quantity');
+//         $result3 = $db->insertIntoTable($r->item, $column_names3, $table_name3);
+});
 ?>
