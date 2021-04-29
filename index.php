@@ -77,7 +77,7 @@
     <div>
         <div class="col-sm-12 text-center"><br>
             <p>Developed by Ronny Ritprasert and Tyler Chang</p>
-            <a href="api/test.php" style="text-decoration: none;">database test</a><br>
+            <a href="https://github.com/174-databases/174-Database" style="text-decoration: none;"><i class="fa fa-github" style="font-size=24px"></i>GitHub</a><br>
             <small>&copy; Copyright 2021,  All Rights Reserved</small>
         </div>
     </div>

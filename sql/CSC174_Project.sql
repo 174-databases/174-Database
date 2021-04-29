@@ -3,7 +3,7 @@ CREATE TABLE CUSTOMER (
     firstName   varchar(50),
     lastName    varchar(50),
     email       varchar(255),
-    password    varchar(50),
+    password    varchar(150),
     PRIMARY KEY (ID)
 )   CHARACTER SET 'utf8mb4'
     COLLATE 'utf8mb4_unicode_520_ci';
@@ -79,3 +79,7 @@ CREATE TABLE COMPUTER (
         ON UPDATE RESTRICT
 )   CHARACTER SET 'utf8mb4'
     COLLATE 'utf8mb4_unicode_520_ci';
+
+
+-- Insert
+INSERT INTO CUSTOMER('id', 'firstName', 'lastName', 'email', 'password') VALUES('100', 'John', 'Smith', 'jsmith@gmail.com', 'P@ssW0rD');

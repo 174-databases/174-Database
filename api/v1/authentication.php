@@ -9,6 +9,14 @@ $app->get('/session', function() {
     echoResponse(200, $session);
 });
 
+$app->get('/getFirstName', function() {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    $email = $session['email'];
+    $rec = $db->getOneRecord("select firstName from CUSTOMER where email='$email'");
+    echo $rec['firstName'];
+});
+
 $app->post('/login', function() use ($app) {
     require_once 'passwordHash.php';
     $r = json_decode($app->request->getBody());
@@ -110,9 +118,10 @@ $app->post('/updateAccount', function() use ($app) {
         $table_name = "CUSTOMER";
         $column_names = 'firstName';
         $result = $db->updateTable($column_names, $table_name, $firstName, $email);
-        if ($result != NULL) {
+        if ($result == NULL) {
             $response["status"] = "success";
-            $response["message"] = "Updated account successfully";
+            $check_firstName = $db->getOneRecord("select firstName from CUSTOMER where email='$email'");
+            $response["message"] = "successfully updated account name to $check_firstName[firstName]";
             echoResponse(200, $response);
         } else {
             $response["status"] = "error";

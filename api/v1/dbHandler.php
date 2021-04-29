@@ -15,7 +15,7 @@ class DbHandler {
      */
     public function getOneRecord($query) {
         $r = $this->conn->query($query.' LIMIT 1') or die($this->conn->error.__LINE__);
-        return $result = $r->fetch_assoc();    
+        return $result = $r->fetch_assoc();
     }
     /**
      * Creating new record
@@ -47,8 +47,7 @@ class DbHandler {
     }
 
     public function updateTable($column_names, $table_name, $name, $email) {
-        $query = "UPDATE ".$table_name." SET ".$column_names."=".$name." WHERE email=".$email;
-        //$query = "UPDATE CUSTOMER SET firstName='tyr' WHERE email='test@gmail.com'";
+        $query = "UPDATE CUSTOMER SET firstName='$name' WHERE email='$email'";
         $r = $this->conn->query($query) or die($this->conn->error.__LINE__);
 
         if ($r) {
