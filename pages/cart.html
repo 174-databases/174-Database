@@ -1,0 +1,18 @@
+<h2 style="text-align:center;">{{ message }}</h2>
+<div class="row">
+    <div class="col-75">
+        <div class="container">
+            <form action="/action_page.php">
+                <div class="col-25">
+                    <div class="check-container">
+                        <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i><b>{{ quantity }}</b></span></h4>
+                        <div ng-bind-html="cartItem"></div>
+                        <hr>
+                        <p>Total <span class="price" style="color:black"><b>{{ total }}</b></span></p>
+                    </div>
+                </div>
+                <input type="submit" value="Continue to checkout" class="btn">
+            </form>
+        </div>
+    </div>
+</div>

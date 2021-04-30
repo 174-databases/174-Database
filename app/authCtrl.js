@@ -50,4 +50,9 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
             $location.path('login');
         });
     }
+
+//    $scope.cartQuantity = function () {
+//        console.log($scope.quantity);
+//        $cookieStore.put("quantity", $scope.quantity);
+//    }
 });

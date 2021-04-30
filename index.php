@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Ronny & Tyler's Shop</title>
+    <title>Ronny & Tyler Shop</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -37,12 +37,7 @@
     <!-- Navigation Bar -->
     <ul id="navbar" ng-controller="authCtrl">
         <a href="#/"><img src="images/rt_logo.png" class="logo"></img></a>
-        <!-- <li class="account-li">
-            <a class="account-a">
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                <a href="#/settings">Settings</a>
-            </a>
-        </li> -->
+
         <div class="dropdown" style="float:right;">
             <i class="dropbtn fa fa-user-circle-o" aria-hidden="true"></i>
             <div class="dropdown-content">
@@ -50,8 +45,8 @@
             </div>
         </div>
 
-        <li><a ng-click="toggleLogin();">{{ loggedIn ? 'Logout'  : 'Login' }}</a></li>
-        <li><a><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class='badge badge-warning' id='lblCartCount'> {{ quantity }} </span></a></li>
+        <li><a ng-click="toggleLogin();" style="padding: 28px 16px;">{{ loggedIn ? 'Logout'  : 'Login' }}</a></li>
+        <li><a href="#/cart" style="color:black;" ng-bind-html="cart"></a></li>
 
         <!-- Search Bar -->
         <div class="wrap">
