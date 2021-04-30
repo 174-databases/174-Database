@@ -71,10 +71,15 @@ $routeProvider
     controller : 'DesktopController'
 })
 
+.when('/cart', {
+    templateUrl : 'pages/cart.html',
+    controller : 'CartController'
+})
+
 .otherwise({redirectTo: '/'});
 });
 
-app.run(function ($rootScope, $location, Data) {
+app.run(function ($rootScope, $location, $cookies, $sce, Data) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         $rootScope.authenticated = false;
         Data.get('session').then(function (results) {
@@ -85,7 +90,39 @@ app.run(function ($rootScope, $location, Data) {
                 $rootScope.lastName = results.lastName;
                 $rootScope.email = results.email;
                 $rootScope.loggedIn = true;
-                $rootScope.quantity = 0;
+
+                // Define Item Global Variables
+                $rootScope.item = [];
+
+                // Shirt Items
+                // Automatically get customer ID and set default values for T-Shirt
+                $rootScope.shirt = {type:'shirt',id:results.id,sku:101,color:'red',size:'medium',quantity:1,price:4.99};
+                $rootScope.item.shirt = $rootScope.shirt;
+
+                for(var i in $rootScope.item) {
+                    $cookies.putObject("item", JSON.stringify($rootScope.item[i]));
+                }
+                $rootScope.shirt_quantity = $cookies.get("shirt_quantity");
+                $rootScope.shirt_price = $cookies.get("shirt_price");
+                $rootScope.getItemCookies = JSON.parse($cookies.getObject("item"));
+
+                if($rootScope.shirt_quantity == undefined) {
+                    $rootScope.shirt_quantity = 0;
+                    $rootScope.shirt_price = 0;
+                    $rootScope.total = 0;
+                }
+                console.log($rootScope.shirt_quantity)
+
+                // Cart Global Variables
+                $rootScope.quantity = $rootScope.shirt_quantity; // add all quantities
+                $rootScope.total = parseFloat($rootScope.shirt_price) * $rootScope.shirt_quantity;
+                console.log($rootScope.quantity)
+                // Set Cart Icon for Navbar
+                if($rootScope.quantity != 0) {
+                    $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 0px;'>&#xf07a;</i><span class='badge badge-warning' id='lblCartCount'>"+ $rootScope.quantity +"</span>");
+                } else {
+                    $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 15px;'>&#xf07a;</i>");
+                }
             } else {
                 var nextUrl = next.$$route.originalPath;
                 if (nextUrl == '/signup' || nextUrl == '/password' || nextUrl == '/login') {
@@ -147,15 +184,8 @@ app.controller('PasswordController', function($scope, $location, $http, Data) {
     $scope.message = "Reset Password";
 });
 
-app.controller('TshirtController', function($rootScope, $scope, $location, $http, Data) {
+app.controller('TshirtController', function($rootScope, $scope, $location, $cookies, $sce, $http, Data) {
     $scope.message = "Clothing";
-
-    // Automatically get customer ID and set default values for T-Shirt
-        Data.get('session').then(function (results) {
-            if (results.id) {
-                $scope.item = {id:results.id,sku:101,color:'red',size:'medium',quantity:1,price:4.99};
-            }
-        });
 
     $(document).ready(function() {
         $('.color-choose input').on('click', function() {
@@ -168,7 +198,40 @@ app.controller('TshirtController', function($rootScope, $scope, $location, $http
       });
 
     $scope.addToCart = function (item) {
-        $rootScope.quantity = item.quantity;
+        // Determine SKU
+        if(item.color) {
+            switch (item.color) {
+                case "blue":
+                    $rootScope.item.shirt.sku = item['sku'] = 102;
+                    break;
+                case "white":
+                     $rootScope.item.shirt.sku = item['sku'] = 103;
+                     break;
+                case "black":
+                    $rootScope.item.shirt.sku = item['sku'] = 104;
+                    break;
+                default: $scope.item.shirt.sku = item['sku'] = 101; break;
+            }
+        }
+
+        // Set Cookies
+        for(var i in item) {
+            $cookies.put("shirt_"+i, item[i]);
+        }
+
+        // Store shirt quantity
+        $rootScope.shirt_quantity = $cookies.get("shirt_quantity");
+        // Store shirt price
+        $rootScope.shirt_price = $cookies.get("shirt_price");
+
+        // Update Cart Icon for Navbar
+        if($rootScope.shirt_quantity != 0) {
+//            $rootScope.quantity += $rootScope.shirt_quantity;
+            $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 0px;'>&#xf07a;</i><span class='badge badge-warning' id='lblCartCount'>"+ $rootScope.shirt_quantity +"</span>");
+        } else {
+//            $rootScope.quantity -= $rootScope.shirt_quantity;
+            $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 15px;'>&#xf07a;</i>");
+        }
     };
 });
 
@@ -189,4 +252,9 @@ app.controller('LaptopController', function($scope) {
 
 app.controller('DesktopController', function($scope) {
     $scope.message = "Desktop";
+});
+
+app.controller('CartController', function($rootScope, $scope) {
+    $scope.message = "Checkout";
+    $scope.cartItem = "<p><a href='#'>"+ $rootScope.getItemCookies.type +"</a> <span class='price'>"+ $rootScope.shirt_price +"</span></p>";
 });
