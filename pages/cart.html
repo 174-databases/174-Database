@@ -6,12 +6,20 @@
                 <div class="col-25">
                     <div class="check-container">
                         <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i><b>{{ quantity }}</b></span></h4>
-                        <div ng-bind-html="cartItem"></div>
+                        <table>
+                            <tr>
+                                <th><h5>Items</h5></th>
+                                <th><h5>Quantity</h5></th>
+                                <th><h5>Price</h5></th>
+                            </tr>
+                            <tr ng-bind-html="cartItem">
+                            </tr>
+                        </table>
                         <hr>
                         <p>Total <span class="price" style="color:black"><b>{{ total }}</b></span></p>
                     </div>
                 </div>
-                <input type="submit" value="Continue to checkout" class="btn">
+                <input type="submit" value="Order Now" class="btn" ng-click="checkout()">
             </form>
         </div>
     </div>

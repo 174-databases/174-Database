@@ -96,31 +96,72 @@ app.run(function ($rootScope, $location, $cookies, $sce, Data) {
 
                 // Shirt Items
                 // Automatically get customer ID and set default values for T-Shirt
-                $rootScope.shirt = {type:'shirt',id:results.id,sku:101,color:'red',size:'medium',quantity:1,price:4.99};
+                if(!$rootScope.shirt) {
+                    $rootScope.shirt = {type:'shirt',id:results.id,sku:101,color:'red',size:'medium',quantity:1,price:4.99};
+                }
                 $rootScope.item.shirt = $rootScope.shirt;
 
-                for(var i in $rootScope.item) {
-                    $cookies.putObject("item", JSON.stringify($rootScope.item[i]));
+                // Pizza Items
+                // Automatically get customer ID and set default values for Pizza
+                if(!$rootScope.pizza) {
+                    $rootScope.pizza = {type:'pizza',id:results.id,sku:105,quantity:1,price:9.99};
                 }
+                $rootScope.item.pizza = $rootScope.pizza;
+
+                // Laptop Items
+                // Automatically get customer ID and set default values for Pizza
+                if(!$rootScope.laptop) {
+                    $rootScope.laptop = {type:'laptop',id:results.id,sku:106,quantity:1,price:109.99};
+                }
+                $rootScope.item.laptop = $rootScope.laptop;
+
+                // Desktop Items
+                // Automatically get customer ID and set default values for Pizza
+                if(!$rootScope.desktop) {
+                    $rootScope.desktop = {type:'desktop',id:results.id,sku:107,quantity:1,price:299.99};
+                }
+                $rootScope.item.desktop = $rootScope.desktop;
+
+                for(var i in $rootScope.item) {
+                    console.log($rootScope.item[i])
+                }
+
+                // Set Global Variables from cookies
                 $rootScope.shirt_quantity = $cookies.get("shirt_quantity");
                 $rootScope.shirt_price = $cookies.get("shirt_price");
-                $rootScope.getItemCookies = JSON.parse($cookies.getObject("item"));
+                $rootScope.pizza_quantity = $cookies.get("pizza_quantity");
+                $rootScope.pizza_price = $cookies.get("pizza_price");
+                $rootScope.laptop_quantity = $cookies.get("laptop_quantity");
+                $rootScope.laptop_price = $cookies.get("laptop_price");
+                $rootScope.desktop_quantity = $cookies.get("desktop_quantity");
+                $rootScope.desktop_price = $cookies.get("desktop_price");
 
+
+                // Set Default Values for tshirt
                 if($rootScope.shirt_quantity == undefined) {
                     $rootScope.shirt_quantity = 0;
                     $rootScope.shirt_price = 0;
                     $rootScope.total = 0;
                 }
-                console.log($rootScope.shirt_quantity)
+
+                if($rootScope.pizza_quantity == undefined) {
+                    $rootScope.pizza_quantity = 0;
+                    $rootScope.prize_price = 0;
+                    $rootScope.total = 0;
+                }
 
                 // Cart Global Variables
-                $rootScope.quantity = $rootScope.shirt_quantity; // add all quantities
+                $rootScope.quantity = parseInt($rootScope.shirt_quantity) + parseInt($rootScope.pizza_quantity); // add all quantities
                 $rootScope.total = parseFloat($rootScope.shirt_price) * $rootScope.shirt_quantity;
-                console.log($rootScope.quantity)
+                $rootScope.item.url = "#/clothing/tshirt";
+
                 // Set Cart Icon for Navbar
                 if($rootScope.quantity != 0) {
                     $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 0px;'>&#xf07a;</i><span class='badge badge-warning' id='lblCartCount'>"+ $rootScope.quantity +"</span>");
+                    $rootScope.cartItem = "<th class='table'><a href="+ $rootScope.item.url +"><img src='images/tshirt_red.jpg' class='cartImage'><br>" + $rootScope.item['shirt'].color + ' ' +$rootScope.item['shirt'].type +"</a></th><th><input type='text'>"+ $rootScope.shirt_quantity +"</th><th><span class='price'>"+ $rootScope.shirt_price +"</span></th>";
+
                 } else {
+                    $rootScope.cartItem = "";
                     $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 15px;'>&#xf07a;</i>");
                 }
             } else {
@@ -219,6 +260,10 @@ app.controller('TshirtController', function($rootScope, $scope, $location, $cook
             $cookies.put("shirt_"+i, item[i]);
         }
 
+        // Update Global shirt Variable
+        $rootScope.shirt = item;
+        console.log($rootScope.shirt)
+
         // Store shirt quantity
         $rootScope.shirt_quantity = $cookies.get("shirt_quantity");
         // Store shirt price
@@ -235,8 +280,23 @@ app.controller('TshirtController', function($rootScope, $scope, $location, $cook
     };
 });
 
-app.controller('FoodController', function($scope) {
+app.controller('FoodController', function($rootScope, $scope, $cookies) {
     $scope.message = "Food";
+
+    $scope.addToCart = function (item) {
+        // Determine SKU
+        console.log($rootScope.item)
+
+        // Set Cookies
+        for(var i in item) {
+            $cookies.put("pizza_"+i, item[i]);
+        }
+
+        // Store shirt quantity
+        $rootScope.pizza_quantity = $cookies.get("pizza_quantity");
+        // Store shirt price
+        $rootScope.pizza_price = $cookies.get("pizza_price");
+    };
 });
 
 app.controller('ComputerController', function($scope) {
@@ -246,15 +306,59 @@ app.controller('ComputerController', function($scope) {
     $scope.section_title.push("Laptop");
 });
 
-app.controller('LaptopController', function($scope) {
+app.controller('LaptopController', function($rootScope, $scope, $cookies) {
     $scope.message = "Laptop";
+
+    $scope.addToCart = function (item) {
+            // Determine SKU
+            console.log($rootScope.item)
+
+            // Set Cookies
+            for(var i in item) {
+                $cookies.put("laptop_"+i, item[i]);
+            }
+
+            // Store Laptop quantity
+            $rootScope.laptop_quantity = $cookies.get("laptop_quantity");
+            // Store Laptop price
+            $rootScope.laptop_price = $cookies.get("laptop_price");
+        };
+
 });
 
-app.controller('DesktopController', function($scope) {
+app.controller('DesktopController', function($rootScope, $scope, $cookies) {
     $scope.message = "Desktop";
+
+    $scope.addToCart = function (item) {
+        // Determine SKU
+        console.log($rootScope.item)
+
+        // Set Cookies
+        for(var i in item) {
+            $cookies.put("desktop_"+i, item[i]);
+        }
+
+        // Store Desktop quantity
+        $rootScope.desktop_quantity = $cookies.get("desktop_quantity");
+        // Store Desktop price
+        $rootScope.desktop_price = $cookies.get("desktop_price");
+    };
 });
 
-app.controller('CartController', function($rootScope, $scope) {
+app.controller('CartController', function($rootScope, $scope, $cookies) {
     $scope.message = "Checkout";
-    $scope.cartItem = "<p><a href='#'>"+ $rootScope.getItemCookies.type +"</a> <span class='price'>"+ $rootScope.shirt_price +"</span></p>";
+    console.log($cookies.get("shirt_quantity"));
+    console.log($cookies.get("pizza_quantity"));
+    console.log($cookies.get("laptop_quantity"));
+    console.log($cookies.get("desktop_quantity"));
+    $scope.checkout = function () {
+        Data.post('checkout', {
+            customer: customer
+        }).then(function (results) {
+            Data.toast(results);
+            if (results.status == "success") {
+                $location.path('/');
+            }
+        });
+    }
 });
