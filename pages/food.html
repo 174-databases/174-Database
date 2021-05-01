@@ -15,31 +15,15 @@
       <p>The preferred choice of any food is Pizza. Enjoy one of our most popular food items on our menu!</p>
     </div>
 
-    <!-- Product Configuration -->
-    <div class="product-configuration">
+    <div class="product-color">
+      <span>Quantity:</span>
+      <input type="text" class="product-quantity" name="quantity" value="1" ng-size="2" ng-model="item.pizza.quantity" />
+    </div>
 
-      <!-- Product Color -->
-      <div class="product-color">
-        <span>Color</span>
-
-        <div class="color-choose">
-          <!-- <div>
-            <input data-image="cheese" type="radio" id="cheese" name="color" value="cheese" checked>
-            <label for="cheese"><span></span></label>
-          </div>
-          <div>
-            <input data-image="no cheese" type="radio" id="blue" name="color" value="blue">
-            <label for="blue"><span></span></label>
-          </div>
-          <div> -->
-        </div>
-
-      </div>
-    
     <!-- Product Pricing -->
     <div class="product-price">
       <span>$9.99</span>
-      <a href="#" class="cart-btn">Add to cart</a>
+      <input type="submit" value="Add to Cart" class="cart-btn" ng-click="addToCart(item.pizza)" />
     </div>
   </div>
 </div>

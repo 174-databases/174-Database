@@ -134,13 +134,12 @@ $app->post('/updateAccount', function() use ($app) {
 $app->post('/checkout', function() use ($app) {
     $response = array();
     $r = json_decode($app->request->getBody());
-    verifyRequiredParams(array('id'), $r->item);
-//     require_once 'passwordHash.php';
+    verifyRequiredParams(array('id','sku','quantity'), $r->customer);
     $db = new DbHandler();
-    $sku = $r->item->sku;
-//     $id = $r->customer->id;
-//     $inStock = $db->getOneRecord("select id from CUSTOMER where id='$id'");//"select 1 from ITEM where SKU='$sku' AND stockCount > 0");
-//
+    $sku = $r->customer->sku;
+    $id = $r->customer->id;
+    $quantity = $r->customer->quantity;
+    $inStock = $db->getOneRecord("select id from CUSTOMER where id='$id'");
 
 //         $table_name3 = "BUYS";
 //         $column_names3 = array('ID','SKU','quantity');

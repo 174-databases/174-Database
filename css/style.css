@@ -360,6 +360,10 @@ span.price {
     background-color: #64af3d;
   }
 
+  .cartItem, img {
+    width: 10%;
+  }
+
   .badge {
     padding-left: 9px;
     padding-right: 9px;

@@ -11,43 +11,19 @@
       <!-- Product Description -->
       <div class="product-description">
         <span>{{ message }}</span>
-        <h1>Laptop</h1>
-        <p>The preferred choice of a vast range of Clothes we sell here on Ronny and Tyler's Clothing. Have one of the most sought out brands with a breathable shirt. Choose from our vast vriaty of colors.</p>
+        <h1>Dell Latitude E5570 Intel i5</h1>
+        <p>The best selling "Laptop" of 2020 and the fastest of all laptops we sell on this site.</p>
       </div>
-  
-      <!-- Product Configuration -->
-      <div class="product-configuration">
-  
-        <!-- Product Color -->
-        <div class="product-color">
-          <span>Color</span>
-  
-          <div class="color-choose">
-            <div>
-              <input data-image="red" type="radio" id="red" name="color" value="red" checked>
-              <label for="red"><span></span></label>
-            </div>
-            <div>
-              <input data-image="blue" type="radio" id="blue" name="color" value="blue">
-              <label for="blue"><span></span></label>
-            </div>
-            <div>
-              <div>
-                <input data-image="white" type="radio" id="white" name="color" value="white">
-                <label for="white"><span></span></label>
-              </div>
-              <div>
-              <input data-image="black" type="radio" id="black" name="color" value="black">
-              <label for="black"><span></span></label>
-            </div>
-          </div>
-  
-        </div>
-      
+
+      <div class="product-color">
+        <span>Quantity:</span>
+        <input type="text" class="product-quantity" name="quantity" value="1" ng-size="2" ng-model="item.laptop.quantity" />
+      </div>
+
       <!-- Product Pricing -->
       <div class="product-price">
-        <span>$4.99</span>
-        <a href="#" class="cart-btn">Add to cart</a>
+        <span>$109.99</span>
+        <input type="submit" value="Add to Cart" class="cart-btn" ng-click="addToCart(item.laptop)" />
       </div>
     </div>
-  </div>
+</div>
