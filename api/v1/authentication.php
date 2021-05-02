@@ -131,18 +131,84 @@ $app->post('/updateAccount', function() use ($app) {
     }
 });
 
-$app->post('/checkout', function() use ($app) {
-    $response = array();
-    $r = json_decode($app->request->getBody());
-    verifyRequiredParams(array('id','sku','quantity'), $r->customer);
+$app->get('/pizzas', function() {
     $db = new DbHandler();
-    $sku = $r->customer->sku;
-    $id = $r->customer->id;
-    $quantity = $r->customer->quantity;
-    $inStock = $db->getOneRecord("select id from CUSTOMER where id='$id'");
+    $session = $db->getSession();
+    //$email = $session['email'];
+    $rec = $db->getRecords("select * from getAllPizzas");
+    echoResponse(200, $rec);
+});
+$app->get('/tshirts', function() {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    //$email = $session['email'];
+    $rec = $db->getRecords("select * from getAllShirts");
+    echoResponse(200, $rec);
+});
+$app->get('/pizzaDetails/:SKU', function($SKU) {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    //$email = $session['email'];
+    $query = "call getPizzaBySKU(" . $SKU . ")";
+    $rec = $db->getRecords($query);
+    echoResponse(200, $rec);
+});
+$app->get('/computerDetails/:SKU', function($SKU) {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    //$email = $session['email'];
+    $query = "call getComputerBySKU(" . $SKU . ")";
+    $rec = $db->getRecords($query);
+    echoResponse(200, $rec);
+});
+$app->get('/shirtDetails/:SKU', function($SKU) {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    //$email = $session['email'];
+    $query = "call getShirtBySKU(" . $SKU . ")";
+    $rec = $db->getRecords($query);
+    echoResponse(200, $rec);
+});
+$app->get('/computers', function() {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    //$email = $session['email'];
+    $rec = $db->getRecords("select * from getAllComputers");
+    echoResponse(200, $rec);
+});
 
-//         $table_name3 = "BUYS";
+$app->get('/buys/:id', function($id) {
+    $db = new DbHandler();
+    $session = $db->getSession();
+    $rec = $db->getRecords("call getBuysByUserID('" . $id . "')";
+    echoResponse(200, $rec);
+});
+
+$app->post('/checkout', function() use ($app) {
+    try {
+        $response = array();
+        $r = json_decode($app->request->getBody());
+        verifyRequiredParams(array('id'), $r->customer);
+        $db = new DbHandler();
+        $id = $r->customer->id;
+        $cart = $r->cart;
+        $res = 'ok';
+            $obj = new stdClass();
+        foreach ($cart as $cartItem) {
+            $obj->SKU = $cartItem->item->SKU;
+            $obj->quantity = $cartItem->quantity;
+            $obj->id = $id;
+            $table_name3 = "BUYS";
+            $column_names3 = array('id','SKU','quantity');
+            $result3 = $db->insertIntoTable($obj, $column_names3, $table_name3);
+        }
+        echoResponse(200, $obj);
+    }catch(Exception $e) {
+        echoResponse(500, $e);
+    }
+});
+    //$inStock = $db->getOneRecord("select id from CUSTOMER where id='$id'");
+
 //         $column_names3 = array('ID','SKU','quantity');
 //         $result3 = $db->insertIntoTable($r->item, $column_names3, $table_name3);
-});
 ?>

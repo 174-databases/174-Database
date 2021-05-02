@@ -1,4 +1,7 @@
 var app = angular.module('myApp', ['ngRoute', 'ngCookies', 'ngAnimate', 'toaster', 'ngSanitize']);
+const computerKeys = ['SKU', 'price', 'details', 'stockCount', 'brand', 'isLaptop'];
+const pizzaKeys = ['SKU', 'price', 'details', 'stockCount', 'orderNumber', 'type'];
+const tShirtKeys = ['SKU', 'price', 'details', 'stockCount', 'size', 'color'];
 
 app.service('sharedProperties', function () {
     var title = [];
@@ -46,14 +49,24 @@ $routeProvider
     controller : 'SettingsController'
 })
 
-.when('/clothing/tshirt', {
+.when('/clothing', {
+    templateUrl : 'pages/clothing.html',
+    controller : 'ClothingController'
+})
+
+.when('/clothing/tshirt/:SKU', {
     templateUrl : 'pages/tshirt.html',
     controller : 'TshirtController'
 })
 
-.when('/food/pizza', {
+.when('/food', {
     templateUrl : 'pages/food.html',
     controller : 'FoodController'
+})
+
+.when('/food/pizza/:SKU', {
+    templateUrl : 'pages/pizza.html',
+    controller : 'PizzaController'
 })
 
 .when('/computer', {
@@ -61,12 +74,12 @@ $routeProvider
     controller : 'ComputerController'
 })
 
-.when('/computer/laptop', {
+.when('/computer/laptop/:SKU', {
     templateUrl : 'pages/laptop.html',
     controller : 'LaptopController'
 })
 
-.when('/computer/desktop', {
+.when('/computer/desktop/:SKU', {
     templateUrl : 'pages/desktop.html',
     controller : 'DesktopController'
 })
@@ -75,11 +88,53 @@ $routeProvider
     templateUrl : 'pages/cart.html',
     controller : 'CartController'
 })
+.when('/buys', {
+    templateUrl : 'pages/buys.html',
+    controller : 'BuysController'
+})
 
 .otherwise({redirectTo: '/'});
 });
 
 app.run(function ($rootScope, $location, $cookies, $sce, Data) {
+    if ($cookies.get('cart') == null) $cookies.put('cart', JSON.stringify([]))
+    $rootScope.getQuantity = () => {
+        let cart = JSON.parse($cookies.get('cart'));
+        let length = 0;
+        for (let item of cart) {
+            length += item.quantity;
+        }
+        return length;
+    };
+    $rootScope.updateCartIcon = () => {
+        if($rootScope.getQuantity() >  0) {
+            $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 0px;'>&#xf07a;</i><span class='badge badge-warning' id='lblCartCount'>"+ $rootScope.getQuantity() +"</span>");
+        } else {
+            $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 15px;'>&#xf07a;</i>");
+        }
+    }
+    $rootScope.updateCartIcon();
+    $rootScope.removeCart = () => {
+        $cookies.remove('cart');
+        $cookies.put('cart', JSON.stringify([]))
+        $rootScope.updateCartIcon();
+    }
+    $rootScope.addToCart = (item, quantity) => {
+        if (isNaN(quantity)) return;
+        quantity = parseInt(quantity);
+        let cart = JSON.parse($cookies.get('cart'));
+        let found = cart.find(e => e.item.SKU == item.SKU);
+        if (!found) {
+            cart.push({item, quantity});
+            $cookies.put('cart', JSON.stringify(cart));
+        } else {
+            found.quantity += quantity
+            $cookies.put('cart', JSON.stringify(cart));
+        }
+        $rootScope.updateCartIcon();
+        console.log(JSON.parse($cookies.get('cart')));
+    }
+
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         $rootScope.authenticated = false;
         Data.get('session').then(function (results) {
@@ -91,6 +146,7 @@ app.run(function ($rootScope, $location, $cookies, $sce, Data) {
                 $rootScope.email = results.email;
                 $rootScope.loggedIn = true;
 
+                /*
                 // Define Item Global Variables
                 $rootScope.item = [];
 
@@ -164,6 +220,7 @@ app.run(function ($rootScope, $location, $cookies, $sce, Data) {
                     $rootScope.cartItem = "";
                     $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 15px;'>&#xf07a;</i>");
                 }
+                */
             } else {
                 var nextUrl = next.$$route.originalPath;
                 if (nextUrl == '/signup' || nextUrl == '/password' || nextUrl == '/login') {
@@ -174,7 +231,6 @@ app.run(function ($rootScope, $location, $cookies, $sce, Data) {
             }
         });
     });
-    console.log(Data.get('session'));
 });
 
 app.controller('HomeController', function($scope, sharedProperties) {
@@ -225,64 +281,67 @@ app.controller('PasswordController', function($scope, $location, $http, Data) {
     $scope.message = "Reset Password";
 });
 
-app.controller('TshirtController', function($rootScope, $scope, $location, $cookies, $sce, $http, Data) {
+app.controller('TshirtController', function($rootScope, $scope, $cookies, $routeParams, Data) {
     $scope.message = "Clothing";
+    $scope.item = {shirt: {quantity:1}};
 
-    $(document).ready(function() {
-        $('.color-choose input').on('click', function() {
-            var tshirtColor = $(this).attr('data-image');
-       
-            $('.active').removeClass('active');
-            $('.left-column img[data-image = ' + tshirtColor + ']').addClass('active');
-            $(this).addClass('active');
-        });
-      });
+    Data.get('shirtDetails/' + $routeParams.SKU).then(res => {
+        $scope.shirt = {};
+        res = res[0];
+        for (let i in tShirtKeys) {
+            $scope.shirt[tShirtKeys[i]] = res[i];
+        }
+        //$rootScope.addToCart($scope.shirt, 4);
 
-    $scope.addToCart = function (item) {
-        // Determine SKU
-        if(item.color) {
-            switch (item.color) {
-                case "blue":
-                    $rootScope.item.shirt.sku = item['sku'] = 102;
-                    break;
-                case "white":
-                     $rootScope.item.shirt.sku = item['sku'] = 103;
-                     break;
-                case "black":
-                    $rootScope.item.shirt.sku = item['sku'] = 104;
-                    break;
-                default: $scope.item.shirt.sku = item['sku'] = 101; break;
+    });
+
+});
+app.controller('ClothingController', function($rootScope, $scope, $location, $interval, $http, Data) {
+    Data.get('tshirts').then(res => {
+        $scope.tshirts = [];
+        for (let r of res) {
+            let d = {};
+            for (let i in tShirtKeys) {
+                d[tShirtKeys[i]] = r[i];
             }
+            $scope.tshirts.push(d);
         }
+    });
 
-        // Set Cookies
-        for(var i in item) {
-            $cookies.put("shirt_"+i, item[i]);
+    $scope.message = "Clothing";
+    $scope.section_title = [];
+    $scope.section_title.push("TShirts");
+});
+app.controller('FoodController', function($rootScope, $scope, $location, $interval, $http, Data) {
+    Data.get('pizzas').then(res => {
+        $scope.pizzas = [];
+        for (let r of res) {
+            let d = {};
+            for (let i in pizzaKeys) {
+                d[pizzaKeys[i]] = r[i];
+            }
+            $scope.pizzas.push(d);
         }
+    });
 
-        // Update Global shirt Variable
-        $rootScope.shirt = item;
-        console.log($rootScope.shirt)
-
-        // Store shirt quantity
-        $rootScope.shirt_quantity = $cookies.get("shirt_quantity");
-        // Store shirt price
-        $rootScope.shirt_price = $cookies.get("shirt_price");
-
-        // Update Cart Icon for Navbar
-        if($rootScope.shirt_quantity != 0) {
-//            $rootScope.quantity += $rootScope.shirt_quantity;
-            $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 0px;'>&#xf07a;</i><span class='badge badge-warning' id='lblCartCount'>"+ $rootScope.shirt_quantity +"</span>");
-        } else {
-//            $rootScope.quantity -= $rootScope.shirt_quantity;
-            $rootScope.cart = $sce.trustAsHtml("<i class='fa' aria-hidden='true' style='padding: 15px 15px;'>&#xf07a;</i>");
-        }
-    };
+    $scope.message = "Food";
+    $scope.section_title = [];
+    $scope.section_title.push("Pizzas");
+    $scope.section_title.push("Laptop");
 });
 
-app.controller('FoodController', function($rootScope, $scope, $cookies) {
+app.controller('PizzaController', function($rootScope, $scope, $cookies, $routeParams, Data) {
     $scope.message = "Food";
+    $scope.item = {pizza: {quantity:1}};
+    Data.get('pizzaDetails/' + $routeParams.SKU).then(res => {
+        $scope.pizza = {};
+        res = res[0];
+        for (let i in pizzaKeys) {
+            $scope.pizza[pizzaKeys[i]] = res[i];
+        }
+    });
 
+    /*
     $scope.addToCart = function (item) {
         // Determine SKU
         console.log($rootScope.item)
@@ -297,38 +356,59 @@ app.controller('FoodController', function($rootScope, $scope, $cookies) {
         // Store shirt price
         $rootScope.pizza_price = $cookies.get("pizza_price");
     };
+    */
 });
 
-app.controller('ComputerController', function($scope) {
+
+app.controller('ComputerController', function($rootScope, $scope, $location, $interval, $http, Data) {
+    Data.get('computers').then(res => {
+        $scope.desktops = [];
+        $scope.laptops = [];
+        for (let r of res) {
+            let d = {};
+            for (let i in computerKeys) {
+                d[computerKeys[i]] = r[i];
+            }
+            if (d.isLaptop == 1) {
+                $scope.laptops.push(d);
+            } else {
+                $scope.desktops.push(d);
+            }
+        }
+    });
+
     $scope.message = "Computer";
     $scope.section_title = [];
     $scope.section_title.push("Desktop");
     $scope.section_title.push("Laptop");
 });
 
-app.controller('LaptopController', function($rootScope, $scope, $cookies) {
+app.controller('LaptopController', function($rootScope, $scope, $cookies, $routeParams, Data) {
     $scope.message = "Laptop";
+    $scope.item = {laptop: {quantity:1}};
+    Data.get('computerDetails/' + $routeParams.SKU).then(res => {
+        $scope.computer = {};
+        res = res[0];
+        for (let i in computerKeys) {
+            $scope.computer[computerKeys[i]] = res[i];
+        }
 
-    $scope.addToCart = function (item) {
-            // Determine SKU
-            console.log($rootScope.item)
-
-            // Set Cookies
-            for(var i in item) {
-                $cookies.put("laptop_"+i, item[i]);
-            }
-
-            // Store Laptop quantity
-            $rootScope.laptop_quantity = $cookies.get("laptop_quantity");
-            // Store Laptop price
-            $rootScope.laptop_price = $cookies.get("laptop_price");
-        };
-
+    });
 });
 
-app.controller('DesktopController', function($rootScope, $scope, $cookies) {
+app.controller('DesktopController', function($rootScope, $scope, $cookies, $routeParams, Data) {
     $scope.message = "Desktop";
+    $scope.item = {desktop: {quantity:1}};
+    Data.get('computerDetails/' + $routeParams.SKU).then(res => {
+        $scope.computer = {};
+        res = res[0];
+        for (let i in computerKeys) {
+            $scope.computer[computerKeys[i]] = res[i];
+        }
 
+    });
+
+    /*
     $scope.addToCart = function (item) {
         // Determine SKU
         console.log($rootScope.item)
@@ -343,22 +423,43 @@ app.controller('DesktopController', function($rootScope, $scope, $cookies) {
         // Store Desktop price
         $rootScope.desktop_price = $cookies.get("desktop_price");
     };
+    */
 });
 
-app.controller('CartController', function($rootScope, $scope, $cookies) {
+app.controller('CartController', function($rootScope, $scope, $cookies, Data) {
     $scope.message = "Checkout";
-    console.log($cookies.get("shirt_quantity"));
-    console.log($cookies.get("pizza_quantity"));
-    console.log($cookies.get("laptop_quantity"));
-    console.log($cookies.get("desktop_quantity"));
+    $scope.cart = JSON.parse($cookies.get('cart'));
+    $scope.total = $scope.cart.reduce((acc, v) => (parseFloat(acc) + parseFloat(v.item.price) * parseFloat(v.quantity)).toFixed(2), 0);
+    $scope.removeCart =() => {
+        $scope.total = 0;
+        $rootScope.removeCart();
+        $scope.cart = JSON.parse($cookies.get('cart'));
+    };
+    console.log($cookies.getAll());
     $scope.checkout = function () {
+        let customer = JSON.parse($cookies.get('customer'));
+        let cart = $scope.cart;
         Data.post('checkout', {
-            customer: customer
+            customer: customer,
+            cart: cart
         }).then(function (results) {
             Data.toast(results);
-            if (results.status == "success") {
-                $location.path('/');
-            }
-        });
+            console.log(results);
+            //$location.path('/');
+        }).catch(err => {
+            console.error(err);
+        });;
     }
+});
+
+app.controller('BuysController', function($rootScope, $scope, $cookies, Data) {
+    $scope.message = "Purchases";
+    console.log($cookies.getAll());
+    let customer = JSON.parse($cookies.get('customer'));
+    let cart = $scope.cart;
+    console.log("ga")
+    Data.get('buys/'+customer.id).then(function (results) {
+        console.log(results);
+    });
+            //$location.path('/');
 });
