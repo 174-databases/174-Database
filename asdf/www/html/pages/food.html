@@ -1,0 +1,34 @@
+<div class="center">
+    <!-- Desktop Section -->  
+    <h3 class="welcome">{{ section_title[0] }}</h3>
+        <span ng-repeat="p in pizzas">
+            <a href="#/food/pizza/{{p.SKU}}">
+                <button class="main_button btn_img">
+                    <img src="images/pizza.jpg" class="img" /><br>
+                    <p style="font-family:sans-serif;">{{p.details}}</p>
+                </button>
+            </a>
+        </span>
+<!--        <a href="#/computer/desktop">-->
+<!--            <button class="main_button btn_img"><img src="images/lenovo_desktop.jpg" class="img" /><br><p style="font-family:sans-serif;">{{ item_name[4] }}</p></button>-->
+<!--        </a>-->
+<!--        <a href="#/computer/desktop">-->
+<!--            <button class="main_button btn_img"><img src="images/hp_desktop.jpg" class="img" /><br><p style="font-family:sans-serif;">{{ item_name[4] }}</p></button>-->
+<!--        </a>-->
+<!--        <a href="#/computer/desktop">-->
+<!--            <button class="main_button btn_img"><img src="images/mac_desktop.jpg" class="img" /><br><p style="font-family:sans-serif;">{{ item_name[4] }}</p></button>-->
+<!--        </a>-->
+
+    <br>
+    <!-- Laptop Section
+    <h3 class="welcome">{{ section_title[1] }}</h3>
+        <a href="#/computer/laptop">
+            <button class="main_button btn_img"><img src="images/dell_laptop.jpg" class="img" /><br><p style="font-family:sans-serif;">{{ item_name[4] }}</p></button>
+        </a>
+<!--        <a href="#/computer/desktop">-->
+<!--            <button class="main_button btn_img"><img src="images/lenovo_laptop.jpg" class="img" /><br><p style="font-family:sans-serif;">{{ item_name[4] }}</p></button>-->
+<!--        </a>-->
+<!--        <a href="#/computer/desktop">-->
+<!--            <button class="main_button btn_img"><img src="images/hp_laptop.jpg" class="img" /><br><p style="font-family:sans-serif;">{{ item_name[4] }}</p></button>-->
+<!--        </a>-->
+</div>

@@ -1,0 +1,43 @@
+<div class="container2">
+  <!-- Left Column / T-Shirt Image -->
+  <div class="left-column" style="width: 40%;margin: 0 20%;">
+    <img src="images/tshirt_black.jpg" alt="">
+  </div>
+
+
+  <!-- Right Column -->
+  <div class="right-column">
+
+    <!-- Product Description -->
+    <div class="product-description">
+      <span>{{ message }}</span>
+      <h1>T-Shirt</h1>
+      <p>{{shirt.details}}</p>
+    </div>
+
+    <!-- Product Configuration -->
+    <div class="product-configuration">
+
+      <!-- Product Color -->
+      <div class="product-color">
+        <span>Color: <span style="text-transform: capitalize">{{shirt.color}}</span></span>
+
+      </div>
+
+    <!-- Product Size -->
+    <div class="product-color">
+        <span>Size: <span style="text-transform: uppercase">{{shirt.size}}</span></span>
+    </div>
+
+    <div class="product-color">
+      <span>Quantity:</span>
+      <input type="text" class="product-quantity" name="quantity" value="1" ng-size="2" ng-model="item.shirt.quantity" />
+    </div>
+
+    <!-- Product Pricing -->
+    <div class="product-price">
+        <span>${{(shirt.price * item.shirt.quantity).toFixed(2)}}</span>
+      <input type="submit" value="Add to Cart" class="cart-btn" ng-click="addToCart(shirt, item.shirt.quantity)" />
+    </div>
+  </div>
+</div>
