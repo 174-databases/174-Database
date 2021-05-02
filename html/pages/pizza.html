@@ -1,0 +1,29 @@
+<div class="container2">
+  <!-- Left Column / Pizza Image -->
+  <div class="left-column">
+    <img data-image="red" class="active" src="images/pizza.jpg" alt="">
+  </div>
+
+
+  <!-- Right Column -->
+  <div class="right-column">
+
+    <!-- Product Description -->
+    <div class="product-description">
+      <span>{{ message }}</span>
+      <h1>Pizza</h1>
+      <p>{{ pizza.details }}</p>
+    </div>
+
+    <div class="product-color">
+      <span>Quantity:</span>
+      <input type="text" class="product-quantity" name="quantity" value="1" ng-size="2" ng-model="item.pizza.quantity" />
+    </div>
+
+    <!-- Product Pricing -->
+    <div class="product-price">
+        <span>${{(pizza.price * item.pizza.quantity).toFixed(2)}}</span>
+      <input type="submit" value="Add to Cart" class="cart-btn" ng-click="addToCart(pizza, item.pizza.quantity)" />
+    </div>
+  </div>
+</div>
